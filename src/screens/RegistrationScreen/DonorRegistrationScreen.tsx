@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, RefObject, createRef } from 'react';
 import { useNavigation } from 'react-navigation-hooks';
 import {
 	Alert,
 	ScrollView,
 	Text,
 	View,
+	TextInput,
 } from 'react-native';
 import { Checkbox } from 'react-native-paper';
 import {
@@ -17,6 +18,7 @@ import {
 } from '@elements';
 import useGlobal from '@state';
 import * as colors from '@util/colors';
+import { focusHolder } from '@util/form'
 import { ImageInfo } from 'expo-image-picker/build/ImagePicker.types';
 import styles from './RegistrationScreen.styles';
 
@@ -37,6 +39,9 @@ export default () => {
 	const [ zip, setZip ] = useState('');
 
 	const toggleTermsOfService = () => setTermsOfService(!termsOfService);
+
+	const inputNames: string[] = ['organizationName', 'email', 'password', 'license', 'street', 'city', 'state', 'zip'];
+	const { inputRefs, focusNextField } = focusHolder(inputNames);
 
 	const validateAndSubmit = async () => {
 		if (organizationName === '') { Alert.alert("Please add your organization's name."); return; }
@@ -73,24 +78,41 @@ export default () => {
 					label="Organization Name"
 					value={organizationName}
 					setValue={setOrganizationName}
+					ref={inputRefs['organizationName']}
+					onSubmitEditing={focusNextField}
+					returnKeyType="next"
+					blurOnSubmit={true}
+					autoFocus={true}
 				/>
 
 				<FormTextInput
 					label="Email Address"
 					value={email}
 					setValue={setEmail}
+					ref={inputRefs['email']}
+					onSubmitEditing={focusNextField}
+					returnKeyType="next"
+					blurOnSubmit={true}
 				/>
 
 				<FormTextInput
 					label="Password"
 					value={password}
 					setValue={setPassword}
+					ref={inputRefs['password']}
+					onSubmitEditing={focusNextField}
+					returnKeyType="next"
+					blurOnSubmit={true}
 				/>
 
 				<FormTextInput
 					label="WA State UBI (Business License No.)"
 					value={license}
 					setValue={setLicense}
+					ref={inputRefs['license']}
+					onSubmitEditing={focusNextField}
+					returnKeyType="next"
+					blurOnSubmit={true}
 				/>
 
 				<FormImageInput
@@ -105,6 +127,10 @@ export default () => {
 					value={street}
 					setValue={setStreet}
 					autoCapitalize="words"
+					ref={inputRefs['street']}
+					onSubmitEditing={focusNextField}
+					returnKeyType="next"
+					blurOnSubmit={true}
 				/>
 
 				<View style={styles.row}>
@@ -114,6 +140,10 @@ export default () => {
 						setValue={setCity}
 						style={{ width: '40%' }}
 						autoCapitalize="words"
+						ref={inputRefs['city']}
+						onSubmitEditing={focusNextField}
+						returnKeyType="next"
+						blurOnSubmit={true}
 					/>
 					<FormTextInput
 						label="State"
@@ -121,6 +151,10 @@ export default () => {
 						setValue={() => { }}
 						style={{ width: '15%' }}
 						autoCapitalize="words"
+						ref={inputRefs['state']}
+						onSubmitEditing={focusNextField}
+						returnKeyType="next"
+						blurOnSubmit={true}
 					/>
 					<FormTextInput
 						label="Zip"
@@ -128,6 +162,7 @@ export default () => {
 						setValue={setZip}
 						style={{ width: '35%' }}
 						autoCapitalize="words"
+						ref={inputRefs['zip']}
 					/>
 				</View>
 
